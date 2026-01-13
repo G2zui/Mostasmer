@@ -297,26 +297,37 @@
         $(document).ready(function() {
             $('#contactForm').on('submit', function(e) {
                 e.preventDefault();
-                
+
                 // Get form values
-                const name = $('#name').val();
-                const email = $('#email').val();
-                const phone = $('#phone').val();
-                const subject = $('#subject').val();
-                const message = $('#message').val();
-                
-                // Create WhatsApp message
+                const name = $('#name').val().trim();
+                const email = $('#email').val().trim();
+                const phone = $('#phone').val().trim();
+                const subject = $('#subject').val().trim();
+                const message = $('#message').val().trim();
+
+                // Basic validation (HTML 'required' should handle most cases)
+                if (!name || !email || !subject || !message) {
+                    alert('Please fill all required fields.');
+                    return;
+                }
+
+                // Build WhatsApp message
                 const whatsappMessage = `Hello Mostasmer Team,\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nSubject: ${subject}\n\nMessage:\n${message}`;
-                
+
                 // Encode message for URL
                 const encodedMessage = encodeURIComponent(whatsappMessage);
-                
-                // Open WhatsApp with pre-filled message
-                window.open(`https://wa.me/201222145530?text=${encodedMessaeg}`, '_blank');
-                
-                // Show success message
-                alert('Redirecting to WhatsApp... Please send your message.');
-                
+
+                // Recipient number in international format (no + or leading zeros)
+                // Change this to the number you want to receive messages on, e.g. '201222145530' or '971589062395'
+                const recipientNumber = '201222145530';
+
+                // Open WhatsApp Web / App with the pre-filled message
+                const waUrl = `https://wa.me/${recipientNumber}?text=${encodedMessage}`;
+
+                // Optional: notify user and open in new tab
+                alert('Redirecting to WhatsApp...');
+                window.open(waUrl, '_blank');
+
                 // Reset form
                 this.reset();
             });
@@ -324,3 +335,4 @@
     </script>
 </body>
 </html>
+
